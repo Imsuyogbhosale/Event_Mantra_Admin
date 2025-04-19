@@ -137,6 +137,7 @@ export default function CategoryTable({formData}) {
   );
 
   const handleChangeRowsPerPage = (event) => {
+    
     setRowsPerPage(event.target.value);
     setPage(0); // Reset to the first page
   };
