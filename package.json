@@ -6,16 +6,17 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "lint": "eslint src/**/*.{js,jsx}",
     "preview": "vite preview",
-    "prepare": "husky install",
-    "format": "prettier . --write",
-    "lint-staged": "lint-staged"
+    "lint": "eslint src/**/*.{js,jsx,ts,tsx}",
+    "format": "prettier --write .",
+    "prepare": "husky install"
   },
   "lint-staged": {
-    "**/*": [
-      "npm run format",
-      "git add"
+    "**/*.{js,jsx,ts,tsx,json,css,md}": [
+      "prettier --write"
+    ],
+    "src/**/*.{js,jsx,ts,tsx}": [
+      "eslint --fix"
     ]
   },
   "dependencies": {
