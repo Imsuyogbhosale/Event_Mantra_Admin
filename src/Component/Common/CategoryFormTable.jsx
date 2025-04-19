@@ -25,57 +25,57 @@ import {
 import { MdEdit, MdDelete } from "react-icons/md";
 import { IoIosArrowUp } from "react-icons/io";
 
-const initialData = [
-  {
-    name: 'Decoration Product',
-    fields: [
-      { title: 'Decoration Product Name', placeholder: 'Product Description', type: 'Text Field' },
-    ],
-    open: true,
-  },
-  {
-    name: 'Events Planner',
-    fields: [
-      { title: 'Oja', placeholder: 'Ott', type: 'Text Field' },
-      { title: 'Monopoly', placeholder: 'Enter Your Monopoly', type: 'Text Field' },
-    ],
-    open: true,
-  },
-  {
-    name: 'Decoration Product',
-    fields: [
-      { title: 'Decoration Product Name', placeholder: 'Product Description', type: 'Text Field' },
-    ],
-    open: true,
-  },
-  {
-    name: 'Events Planner',
-    fields: [
-      { title: 'Oja', placeholder: 'Ott', type: 'Text Field' },
-      { title: 'Monopoly', placeholder: 'Enter Your Monopoly', type: 'Text Field' },
-    ],
-    open: true,
-  },
-  {
-    name: 'Decoration Product',
-    fields: [
-      { title: 'Decoration Product Name', placeholder: 'Product Description', type: 'Text Field' },
-    ],
-    open: true,
-  },
-  {
-    name: 'Events Planner',
-    fields: [
-      { title: 'Oja', placeholder: 'Ott', type: 'Text Field' },
-      { title: 'Monopoly', placeholder: 'Enter Your Monopoly', type: 'Text Field' },
-    ],
-    open: true,
-  },
+// const initialData = [
+//   {
+//     name: 'Decoration Product',
+//     fields: [
+//       { title: 'Decoration Product Name', placeholder: 'Product Description', type: 'Text Field' },
+//     ],
+//     open: true,
+//   },
+//   {
+//     name: 'Events Planner',
+//     fields: [
+//       { title: 'Oja', placeholder: 'Ott', type: 'Text Field' },
+//       { title: 'Monopoly', placeholder: 'Enter Your Monopoly', type: 'Text Field' },
+//     ],
+//     open: true,
+//   },
+//   {
+//     name: 'Decoration Product',
+//     fields: [
+//       { title: 'Decoration Product Name', placeholder: 'Product Description', type: 'Text Field' },
+//     ],
+//     open: true,
+//   },
+//   {
+//     name: 'Events Planner',
+//     fields: [
+//       { title: 'Oja', placeholder: 'Ott', type: 'Text Field' },
+//       { title: 'Monopoly', placeholder: 'Enter Your Monopoly', type: 'Text Field' },
+//     ],
+//     open: true,
+//   },
+//   {
+//     name: 'Decoration Product',
+//     fields: [
+//       { title: 'Decoration Product Name', placeholder: 'Product Description', type: 'Text Field' },
+//     ],
+//     open: true,
+//   },
+//   {
+//     name: 'Events Planner',
+//     fields: [
+//       { title: 'Oja', placeholder: 'Ott', type: 'Text Field' },
+//       { title: 'Monopoly', placeholder: 'Enter Your Monopoly', type: 'Text Field' },
+//     ],
+//     open: true,
+//   },
  
-];
+// ];
 
-export default function CategoryTable() {
-  const [categories, setCategories] = useState(initialData);
+export default function CategoryTable({formData}) {
+  const [categories, setCategories] = useState(formData?.tableBody);
   const [search, setSearch] = useState('');
   const [modalOpen, setModalOpen] = useState(false);
   const [editingField, setEditingField] = useState(null);
@@ -162,11 +162,10 @@ export default function CategoryTable() {
         <Table>
           <TableHead>
             <TableRow sx={{ backgroundColor: '#5b54a6' }}>
-              <TableCell sx={{ color: 'white' }}>Category</TableCell>
-              <TableCell sx={{ color: 'white' }}>Title</TableCell>
-              <TableCell sx={{ color: 'white' }}>Placeholder</TableCell>
-              <TableCell sx={{ color: 'white' }}>Type</TableCell>
-              <TableCell sx={{ color: 'white' }}>Action</TableCell>
+              {formData.tableHead?.map((val,index)=>(
+                <TableCell sx={{ color: 'white' }} key={index}>{val?.label}</TableCell>
+              ))}
+             
             </TableRow>
           </TableHead>
           <TableBody>

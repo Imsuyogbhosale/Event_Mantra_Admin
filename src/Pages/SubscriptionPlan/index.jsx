@@ -1,7 +1,9 @@
 import React from "react";
-import SubscriptionPan from '../../Component/Common/SubscriptionPan'
+import CategoryTable from "../../Component/Common/CategoryFormTable";
+import { subscriptionFormData } from "../../const/form";
+
 const SubscriptionPlan = () => {
-  return <div><SubscriptionPan/></div>;
+  return <div><CategoryTable formData={subscriptionFormData}/></div>;
 };
 
 export default SubscriptionPlan;

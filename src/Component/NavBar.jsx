@@ -49,8 +49,9 @@ import Story from "../Pages/AboutApp/Story";
 import IntroScreen from "../Pages/AboutApp/IntroScreen";
 import Carousel from "../Pages/AboutApp/Carousel";
 import Rating from "../Pages/AboutApp/Rating";
+import PrivacyPolicyEditor from "./Common/PrivacyPolicyEditor";
 
-const drawerWidth = 230;
+const drawerWidth = 260;
 
 const openedMixin = (theme) => ({
   width: drawerWidth,
@@ -167,7 +168,11 @@ export default function NavBar() {
           label: "Terms & Condition",
           icon: <IoCalendarClear />,
           link: "termsCondition",
-          subType: false,
+          subType: true,
+          subItems: [
+            { label: "Terms", link: "terms" },
+            { label: "Condition", link: "condition" },
+          ],
         },
         { label: "Vendors", icon: <FaUsers />, link: "vendors", subType: false },
         {
@@ -229,10 +234,11 @@ export default function NavBar() {
     videoInvites:<VideoInvites/>,
     videoRequests:<VideoRequest/>,
     story:<Story/>,
-    
     introScreen:<IntroScreen/>,
     carousel:<Carousel/>,
-    rating:<Rating/>
+    rating:<Rating/>,
+    terms:<PrivacyPolicyEditor/>,
+    condition:<PrivacyPolicyEditor/>
   };
   return (
     <Box sx={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
