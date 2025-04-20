@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Table, TableBody, TableCell, TableContainer, TableHead, TableRow,
   Paper, Button, Avatar, TextField, Box, FormControl, InputLabel,
   Select, MenuItem, Dialog, DialogTitle, DialogContent, DialogActions
 } from "@mui/material";
+import { enqueueSnackbar } from "notistack";
 
 const initialData = [
   {
@@ -26,16 +27,18 @@ const VideoInvites = () => {
   const [data, setData] = useState(initialData);
   const [searchTerm, setSearchTerm] = useState("");
   const [entries, setEntries] = useState(5);
+  const [currentPage, setCurrentPage] = useState(1);
 
   const [open, setOpen] = useState(false);
   const [form, setForm] = useState({ image: "", video: "", name: "", price: "" });
   const [editId, setEditId] = useState(null);
 
   const handleOpen = () => {
-    setEditId(null); // Add mode
+    setEditId(null);
     setForm({ image: "", video: "", name: "", price: "" });
     setOpen(true);
   };
+
 
   const handleEdit = (item) => {
     setEditId(item.id);
@@ -58,6 +61,7 @@ const VideoInvites = () => {
       setData((prev) =>
         prev.map((item) => (item.id === editId ? { ...form, id: editId } : item))
       );
+      enqueueSnackbar("Video edited SuccesFully", { variant: "success" })   // suyog's code 
     } else {
       const newItem = { ...form, id: Date.now() };
       setData((prev) => [newItem, ...prev]);
@@ -69,28 +73,40 @@ const VideoInvites = () => {
     const confirm = window.confirm("Are you sure you want to delete this item?");
     if (confirm) {
       setData((prev) => prev.filter((item) => item.id !== id));
+      enqueueSnackbar("Video Deleted SuccesFully", { variant: "success" })   // suyog's code 
+
     }
   };
 
-  const filteredData = data
-    .filter(
-      (item) =>
-        item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        item.price.toString().includes(searchTerm)
-    )
-    .slice(0, entries);
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [entries, searchTerm]);
+
+  const filteredDataRaw = data.filter(
+    (item) =>
+      item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      item.price.toString().includes(searchTerm)
+  );
+
+  const totalPages = Math.ceil(filteredDataRaw.length / entries);
+  const startIndex = (currentPage - 1) * entries;
+  const filteredData = filteredDataRaw.slice(startIndex, startIndex + entries);
 
   return (
     <div style={{ padding: "20px", marginBottom: "4px", marginTop: "4px" }}>
       <h2 className="font-bold py-2">Video Invites</h2>
 
       <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
-        <FormControl sx={{ minWidth: 120 }}>
+        <FormControl sx={{ minWidth: 120 }} size="small">
           <InputLabel>Entries</InputLabel>
           <Select
             value={entries}
             label="Entries"
-            onChange={(e) => setEntries(Number(e.target.value))}
+            onChange={(e) => {
+              const selected = Number(e.target.value);
+              setEntries(selected);
+              enqueueSnackbar(`Entries updated to: ${selected}`, { variant: "info" });
+            }}
           >
             <MenuItem value={5}>5</MenuItem>
             <MenuItem value={10}>10</MenuItem>
@@ -98,15 +114,10 @@ const VideoInvites = () => {
           </Select>
         </FormControl>
 
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={handleOpen}
-        >
-          Add
-        </Button>
+        <Button variant="contained" color="primary" onClick={handleOpen}>Add</Button>
 
         <TextField
+          size="small"
           label="Search"
           variant="outlined"
           value={searchTerm}
@@ -118,11 +129,11 @@ const VideoInvites = () => {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>Preview Image</TableCell>
-              <TableCell>Video</TableCell>
-              <TableCell>Name</TableCell>
-              <TableCell>Price (INR)</TableCell>
-              <TableCell>Action</TableCell>
+              <TableCell sx={{ backgroundColor: '#e3f2fd' }}>Preview Image</TableCell>
+              <TableCell sx={{ backgroundColor: '#e3f2fd' }}>Video</TableCell>
+              <TableCell sx={{ backgroundColor: '#e3f2fd' }}>Name</TableCell>
+              <TableCell sx={{ backgroundColor: '#e3f2fd' }}>Price (INR)</TableCell>
+              <TableCell sx={{ backgroundColor: '#e3f2fd' }}>Action</TableCell>
             </TableRow>
           </TableHead>
 
@@ -130,9 +141,7 @@ const VideoInvites = () => {
             {filteredData.length > 0 ? (
               filteredData.map((item) => (
                 <TableRow key={item.id}>
-                  <TableCell>
-                    <Avatar variant="rounded" src={item.image} alt={item.name} />
-                  </TableCell>
+                  <TableCell><Avatar variant="rounded" src={item.image} alt={item.name} /></TableCell>
                   <TableCell>
                     <video width="100" controls>
                       <source src={item.video} type="video/mp4" />
@@ -142,21 +151,10 @@ const VideoInvites = () => {
                   <TableCell>{item.name}</TableCell>
                   <TableCell>₹{item.price}</TableCell>
                   <TableCell>
-                    <Button
-                      variant="outlined"
-                      color="primary"
-                      size="small"
-                      sx={{ mr: 1 }}
-                      onClick={() => handleEdit(item)}
-                    >
+                    <Button variant="outlined" color="primary" size="small" sx={{ mr: 1 }} onClick={() => handleEdit(item)}>
                       Edit
                     </Button>
-                    <Button
-                      variant="outlined"
-                      color="error"
-                      size="small"
-                      onClick={() => handleDelete(item.id)}
-                    >
+                    <Button variant="outlined" color="error" size="small" onClick={() => handleDelete(item.id)}>
                       Delete
                     </Button>
                   </TableCell>
@@ -164,16 +162,33 @@ const VideoInvites = () => {
               ))
             ) : (
               <TableRow>
-                <TableCell colSpan={5} align="center">
-                  No matching records found.
-                </TableCell>
+                <TableCell colSpan={5} align="center">No matching records found.</TableCell>
               </TableRow>
             )}
           </TableBody>
         </Table>
       </TableContainer>
 
-      {/* Dialog Box */}
+      <Box display="flex" justifyContent="center" alignItems="center" mt={2} gap={2}>
+        <Button
+          variant="contained"
+          size="small"
+          disabled={currentPage === 1}
+          onClick={() => setCurrentPage(prev => prev - 1)}
+        >
+          Previous
+        </Button>
+        <span>Page {currentPage} of {totalPages}</span>
+        <Button
+          variant="contained"
+          size="small"
+          disabled={currentPage === totalPages}
+          onClick={() => setCurrentPage(prev => prev + 1)}
+        >
+          Next
+        </Button>
+      </Box>
+
       <Dialog
         open={open}
         onClose={handleClose}
@@ -192,11 +207,7 @@ const VideoInvites = () => {
             <Button
               variant="outlined"
               component="label"
-              sx={{
-                '&:hover': {
-                  backgroundColor: '#e0f0ff',
-                },
-              }}
+              sx={{ '&:hover': { backgroundColor: '#e0f0ff' } }}
             >
               Upload Image
               <input
@@ -215,11 +226,7 @@ const VideoInvites = () => {
             <Button
               variant="outlined"
               component="label"
-              sx={{
-                '&:hover': {
-                  backgroundColor: '#e0f0ff',
-                },
-              }}
+              sx={{ '&:hover': { backgroundColor: '#e0f0ff' } }}
             >
               Upload Video
               <input
