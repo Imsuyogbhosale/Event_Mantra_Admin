@@ -134,9 +134,7 @@ const WeddingCard = () => {
             <MenuItem value={25}>25</MenuItem>
           </Select>
         </FormControl>
-
         <Button variant="contained" color="primary" onClick={handleOpen}>Add</Button>
-
         <TextField
           size="small"
           label="Search"
@@ -153,7 +151,7 @@ const WeddingCard = () => {
               <TableCell sx={{ backgroundColor: '#e3f2fd' }}>Preview Image</TableCell>
               <TableCell sx={{ backgroundColor: '#e3f2fd' }}>
                 <Box display="flex" alignItems="center" gap={0.5}>
-                  Card Price
+                  Card Name
                   <IconButton
                     onClick={() => handleSort("price")}
                     sx={{ padding: '2px', fontSize: '16px' }}
@@ -169,7 +167,7 @@ const WeddingCard = () => {
               </TableCell>
               <TableCell sx={{ backgroundColor: '#e3f2fd' }} >
                 <Box display="flex" alignItems="center" gap={0.5}>
-                  Card Name
+                  Card Price
                   <IconButton
                     onClick={() => handleSort("name")}
                     sx={{ padding: '2px', fontSize: '16px' }}
