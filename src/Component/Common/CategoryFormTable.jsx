@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import PropTypes from "prop-types";
+import React, { useState } from "react";
 import {
   Box,
   Button,
-  Collapse,
   IconButton,
   Table,
   TableBody,
@@ -21,7 +21,7 @@ import {
   InputLabel,
   FormControl,
   TablePagination,
-} from '@mui/material';
+} from "@mui/material";
 import { MdEdit, MdDelete } from "react-icons/md";
 import { IoIosArrowUp } from "react-icons/io";
 
@@ -71,12 +71,12 @@ import { IoIosArrowUp } from "react-icons/io";
 //     ],
 //     open: true,
 //   },
- 
+
 // ];
 
-export default function CategoryTable({formData}) {
+export default function CategoryTable({ formData }) {
   const [categories, setCategories] = useState(formData?.tableBody);
-  const [search, setSearch] = useState('');
+  const [search, setSearch] = useState("");
   const [modalOpen, setModalOpen] = useState(false);
   const [editingField, setEditingField] = useState(null);
   const [selectedCategoryIndex, setSelectedCategoryIndex] = useState(null);
@@ -95,7 +95,7 @@ export default function CategoryTable({formData}) {
     setCategories((prev) => {
       const updated = [...prev];
       updated[catIndex].fields.splice(fieldIndex, 1);
-  
+
       // If no fields left, remove the category
       if (updated[catIndex].fields.length === 0) {
         updated.splice(catIndex, 1);
@@ -103,11 +103,14 @@ export default function CategoryTable({formData}) {
       return updated;
     });
   };
-  
 
   const openEditModal = (catIndex, field = null, fieldIndex = null) => {
     setSelectedCategoryIndex(catIndex);
-    setEditingField(field ? { ...field, fieldIndex } : { title: '', placeholder: '', type: 'Text Field' });
+    setEditingField(
+      field
+        ? { ...field, fieldIndex }
+        : { title: "", placeholder: "", type: "Text Field" },
+    );
     setModalOpen(true);
   };
 
@@ -132,12 +135,11 @@ export default function CategoryTable({formData}) {
       cat.fields.some(
         (f) =>
           f.title.toLowerCase().includes(search.toLowerCase()) ||
-          f.placeholder.toLowerCase().includes(search.toLowerCase())
-      )
+          f.placeholder.toLowerCase().includes(search.toLowerCase()),
+      ),
   );
 
   const handleChangeRowsPerPage = (event) => {
-    
     setRowsPerPage(event.target.value);
     setPage(0); // Reset to the first page
   };
@@ -156,54 +158,69 @@ export default function CategoryTable({formData}) {
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
-        <Button variant="contained" onClick={() => openEditModal(0)}>Add Field</Button>
+        <Button variant="contained" onClick={() => openEditModal(0)}>
+          Add Field
+        </Button>
       </Box>
 
       <TableContainer component={Paper}>
         <Table>
           <TableHead>
-            <TableRow sx={{ backgroundColor: '#5b54a6' }}>
-              {formData.tableHead?.map((val,index)=>(
-                <TableCell sx={{ color: 'white' }} key={index}>{val?.label}</TableCell>
+            <TableRow sx={{ backgroundColor: "#5b54a6" }}>
+              {formData.tableHead?.map((val, index) => (
+                <TableCell sx={{ color: "white" }} key={index}>
+                  {val?.label}
+                </TableCell>
               ))}
-             
             </TableRow>
           </TableHead>
           <TableBody>
-            {filteredCategories.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((cat, catIndex) => (
-              <React.Fragment key={cat.name}>
-                <TableRow>
-                  <TableCell>
-                    <IconButton size="small" onClick={() => handleToggle(catIndex)}>
-                      {cat.open ? <IoIosArrowUp /> : <IoIosArrowUp />}
-                    </IconButton>
-                    {cat.name}
-                  </TableCell>
-                  <TableCell colSpan={4}></TableCell>
-                </TableRow>
-                {cat.open &&
-                  cat.fields.map((field, fieldIndex) => (
-                    <TableRow key={fieldIndex}>
-                      <TableCell></TableCell>
-                      <TableCell>{field.title}</TableCell>
-                      <TableCell>{field.placeholder}</TableCell>
-                      <TableCell>{field.type}</TableCell>
-                      <TableCell>
-                        <IconButton
-                          color="info"
-                          onClick={() => openEditModal(catIndex, field, fieldIndex)}
-                          sx={{ mr: 1 }}
-                        >
-                          <MdEdit />
-                        </IconButton>
-                        <IconButton color="error" onClick={() => handleDeleteField(catIndex, fieldIndex)}>
-                          <MdDelete />
-                        </IconButton>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-              </React.Fragment>
-            ))}
+            {filteredCategories
+              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+              .map((cat, catIndex) => (
+                <React.Fragment key={cat.name}>
+                  <TableRow>
+                    <TableCell>
+                      <IconButton
+                        size="small"
+                        onClick={() => handleToggle(catIndex)}
+                      >
+                        {cat.open ? <IoIosArrowUp /> : <IoIosArrowUp />}
+                      </IconButton>
+                      {cat.name}
+                    </TableCell>
+                    <TableCell colSpan={4}></TableCell>
+                  </TableRow>
+                  {cat.open &&
+                    cat.fields.map((field, fieldIndex) => (
+                      <TableRow key={fieldIndex}>
+                        <TableCell></TableCell>
+                        <TableCell>{field.title}</TableCell>
+                        <TableCell>{field.placeholder}</TableCell>
+                        <TableCell>{field.type}</TableCell>
+                        <TableCell>
+                          <IconButton
+                            color="info"
+                            onClick={() =>
+                              openEditModal(catIndex, field, fieldIndex)
+                            }
+                            sx={{ mr: 1 }}
+                          >
+                            <MdEdit />
+                          </IconButton>
+                          <IconButton
+                            color="error"
+                            onClick={() =>
+                              handleDeleteField(catIndex, fieldIndex)
+                            }
+                          >
+                            <MdDelete />
+                          </IconButton>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                </React.Fragment>
+              ))}
           </TableBody>
         </Table>
       </TableContainer>
@@ -219,12 +236,14 @@ export default function CategoryTable({formData}) {
       />
 
       <Dialog open={modalOpen} onClose={() => setModalOpen(false)}>
-        <DialogTitle>{editingField?.fieldIndex != null ? 'Edit' : 'Add'} Field</DialogTitle>
+        <DialogTitle>
+          {editingField?.fieldIndex != null ? "Edit" : "Add"} Field
+        </DialogTitle>
         <DialogContent>
           <FormControl fullWidth margin="dense">
             <InputLabel>Category</InputLabel>
             <Select
-              value={selectedCategoryIndex || ''}
+              value={selectedCategoryIndex || ""}
               onChange={(e) => setSelectedCategoryIndex(e.target.value)}
               label="Category"
             >
@@ -239,22 +258,31 @@ export default function CategoryTable({formData}) {
             margin="dense"
             label="Title"
             fullWidth
-            value={editingField?.title || ''}
-            onChange={(e) => setEditingField((prev) => ({ ...prev, title: e.target.value }))} 
+            value={editingField?.title || ""}
+            onChange={(e) =>
+              setEditingField((prev) => ({ ...prev, title: e.target.value }))
+            }
           />
           <TextField
             margin="dense"
             label="Placeholder"
             fullWidth
-            value={editingField?.placeholder || ''}
-            onChange={(e) => setEditingField((prev) => ({ ...prev, placeholder: e.target.value }))} 
+            value={editingField?.placeholder || ""}
+            onChange={(e) =>
+              setEditingField((prev) => ({
+                ...prev,
+                placeholder: e.target.value,
+              }))
+            }
           />
           <FormControl fullWidth margin="dense">
             <InputLabel>Type</InputLabel>
             <Select
-              value={editingField?.type || ''}
+              value={editingField?.type || ""}
               label="Type"
-              onChange={(e) => setEditingField((prev) => ({ ...prev, type: e.target.value }))} 
+              onChange={(e) =>
+                setEditingField((prev) => ({ ...prev, type: e.target.value }))
+              }
             >
               <MenuItem value="Text Field">Text Field</MenuItem>
               <MenuItem value="Number">Number</MenuItem>
@@ -264,9 +292,14 @@ export default function CategoryTable({formData}) {
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setModalOpen(false)}>Cancel</Button>
-          <Button variant="contained" onClick={handleSave}>Save</Button>
+          <Button variant="contained" onClick={handleSave}>
+            Save
+          </Button>
         </DialogActions>
       </Dialog>
     </Box>
   );
 }
+CategoryTable.propTypes = {
+  formData: PropTypes.object,
+};

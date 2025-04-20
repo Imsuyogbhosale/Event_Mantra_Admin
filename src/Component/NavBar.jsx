@@ -50,6 +50,8 @@ import IntroScreen from "../Pages/AboutApp/IntroScreen";
 import Carousel from "../Pages/AboutApp/Carousel";
 import Rating from "../Pages/AboutApp/Rating";
 import PrivacyPolicyEditor from "./Common/PrivacyPolicyEditor";
+import VendorView from "../Pages/Vendors/VendorView";
+import VendorEdit from "../Pages/Vendors/VendorEdit";
 
 const drawerWidth = 260;
 
@@ -73,8 +75,6 @@ const closedMixin = (theme) => ({
     width: `calc(${theme.spacing(8)} + 1px)`,
   },
 });
-
-
 
 const AppBar = styled(MuiAppBar)(({ theme }) => ({
   zIndex: theme.zIndex.drawer + 1,
@@ -107,7 +107,7 @@ export default function NavBar() {
   const [expanded, setExpanded] = React.useState({});
   const [hoveredItem, setHoveredItem] = React.useState(null);
   const [mouseY, setMouseY] = React.useState(100);
-  const [windowHeight,setWindowHeight]=React.useState(window.screen.height)
+  const [vendorData, setVendorData] = React.useState(null);
   const toggleDrawer = () => {
     if (open) setExpanded({});
     setOpen(!open);
@@ -136,87 +136,86 @@ export default function NavBar() {
 
   const isActive = (item) =>
     feature === item.link ||
-    (item.subType &&
-      item.subItems.some((s) => `${s.link}` === feature));
+    (item.subType && item.subItems.some((s) => `${s.link}` === feature));
 
-      const sidebarData = [
-        {
-          label: "Dashboard",
-          icon: <MdSpaceDashboard />,
-          link: "dashboard",
-          subType: false,
-        },
-        {
-          label: "Categories",
-          icon: <IoIosList />,
-          link: "categories",
-          subType: false,
-        },
-        {
-          label: "Category Form",
-          icon: <MdPanorama />,
-          link: "categoryForm",
-          subType: false,
-        },
-        {
-          label: "Subscription Plan",
-          icon: <IoReceiptOutline />,
-          link: "subscriptionPlan",
-          subType: false,
-        },
-        {
-          label: "Terms & Condition",
-          icon: <IoCalendarClear />,
-          link: "termsCondition",
-          subType: true,
-          subItems: [
-            { label: "Terms", link: "terms" },
-            { label: "Condition", link: "condition" },
-          ],
-        },
-        { label: "Vendors", icon: <FaUsers />, link: "vendors", subType: false },
-        {
-          label: "E Invite",
-          icon: <FcInvite />,
-          link: "eInvite",
-          subType: true,
-          subItems: [
-            { label: "Wedding Cards", link: "weddingCards" },
-            { label: "Video Invites", link: "videoInvites" },
-            { label: "Requests", link: "videoRequests" },
-          ],
-        },
-        {
-          label: "Top Trending",
-          icon: <FiTrendingUp />,
-          link: "topTrending",
-          subType: false,
-        },
-        {
-          label: "Top Selling",
-          icon: <MdSell />,
-          link: "topSelling",
-          subType: false,
-        },
-        {
-          label: "About App",
-          icon: <MdAppShortcut />,
-          link: "aboutApp",
-          subType: true,
-          subItems: [
-            { label: "Story", link: "story" },
-            { label: "Intro Screen", link: "introScreen" },
-            { label: "Carousel", link: "carousel" },
-            { label: "Rating", link: "rating" },
-          ],
-        },
-        {
-          label: "Contact Us",
-          icon: <IoMdContact />,
-          link: "contactUs",
-          subType: false,
-        },
-      ];
+  const sidebarData = [
+    {
+      label: "Dashboard",
+      icon: <MdSpaceDashboard />,
+      link: "dashboard",
+      subType: false,
+    },
+    {
+      label: "Categories",
+      icon: <IoIosList />,
+      link: "categories",
+      subType: false,
+    },
+    {
+      label: "Category Form",
+      icon: <MdPanorama />,
+      link: "categoryForm",
+      subType: false,
+    },
+    {
+      label: "Subscription Plan",
+      icon: <IoReceiptOutline />,
+      link: "subscriptionPlan",
+      subType: false,
+    },
+    {
+      label: "Terms & Condition",
+      icon: <IoCalendarClear />,
+      link: "termsCondition",
+      subType: true,
+      subItems: [
+        { label: "Terms", link: "terms" },
+        { label: "Condition", link: "condition" },
+      ],
+    },
+    { label: "Vendors", icon: <FaUsers />, link: "vendors", subType: false },
+    {
+      label: "E Invite",
+      icon: <FcInvite />,
+      link: "eInvite",
+      subType: true,
+      subItems: [
+        { label: "Wedding Cards", link: "weddingCards" },
+        { label: "Video Invites", link: "videoInvites" },
+        { label: "Requests", link: "videoRequests" },
+      ],
+    },
+    {
+      label: "Top Trending",
+      icon: <FiTrendingUp />,
+      link: "topTrending",
+      subType: false,
+    },
+    {
+      label: "Top Selling",
+      icon: <MdSell />,
+      link: "topSelling",
+      subType: false,
+    },
+    {
+      label: "About App",
+      icon: <MdAppShortcut />,
+      link: "aboutApp",
+      subType: true,
+      subItems: [
+        { label: "Story", link: "story" },
+        { label: "Intro Screen", link: "introScreen" },
+        { label: "Carousel", link: "carousel" },
+        { label: "Rating", link: "rating" },
+      ],
+    },
+    {
+      label: "Contact Us",
+      icon: <IoMdContact />,
+      link: "contactUs",
+      subType: false,
+    },
+  ];
 
   const links = {
     dashboard: <Dashboard setFeature={setFeature} />,
@@ -224,21 +223,23 @@ export default function NavBar() {
     categoryForm: <CategoryForm />,
     subscriptionPlan: <SubscriptionPlan />,
     termsCondition: <TermCondition />,
-    vendors: <Vendors />,
+    vendors: <Vendors setFeature={setFeature} setVendorData={setVendorData} />,
+    viewVendor: <VendorView vendorData={vendorData} />,
+    vendorEdit: <VendorEdit vendorData={vendorData} />,
     eInvite: <EInvites />,
     topTrending: <TopTrading />,
     topSelling: <TopSelling />,
     aboutApp: <AboutApp />,
     contactUs: <ContactUs />,
-    weddingCards:<WeddingCard/>,
-    videoInvites:<VideoInvites/>,
-    videoRequests:<VideoRequest/>,
-    story:<Story/>,
-    introScreen:<IntroScreen/>,
-    carousel:<Carousel/>,
-    rating:<Rating/>,
-    terms:<PrivacyPolicyEditor/>,
-    condition:<PrivacyPolicyEditor/>
+    weddingCards: <WeddingCard />,
+    videoInvites: <VideoInvites />,
+    videoRequests: <VideoRequest />,
+    story: <Story />,
+    introScreen: <IntroScreen />,
+    carousel: <Carousel />,
+    rating: <Rating />,
+    terms: <PrivacyPolicyEditor />,
+    condition: <PrivacyPolicyEditor />,
   };
   return (
     <Box sx={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
