@@ -29,29 +29,9 @@ import { FaUsers, FaRegCircle } from "react-icons/fa6";
 import { FcInvite } from "react-icons/fc";
 import { FiTrendingUp } from "react-icons/fi";
 
-// Pages
-import Dashboard from "../Pages/Dashboard";
-import Category from "../Pages/Category";
-import AboutApp from "../Pages/AboutApp";
-import CategoryForm from "../Pages/CategoryForm";
-import ContactUs from "../Pages/ContactUs";
-import EInvites from "../Pages/EInvites";
-import SubscriptionPlan from "../Pages/SubscriptionPlan";
-import TermCondition from "../Pages/TermCondition";
-import TopSelling from "../Pages/TopSelling";
-import TopTrading from "../Pages/TopTrading";
-import Vendors from "../Pages/Vendors";
 import emlogo from "../../public/img/emlogo.jpeg";
-import WeddingCard from "../Pages/EInvites/WeddingCard";
-import VideoInvites from "../Pages/EInvites/VideoInvites";
-import VideoRequest from "../Pages/EInvites/VideoRequest";
-import Story from "../Pages/AboutApp/Story";
-import IntroScreen from "../Pages/AboutApp/IntroScreen";
-import Carousel from "../Pages/AboutApp/Carousel";
-import Rating from "../Pages/AboutApp/Rating";
-import PrivacyPolicyEditor from "./Common/PrivacyPolicyEditor";
-import VendorView from "../Pages/Vendors/VendorView";
-import VendorEdit from "../Pages/Vendors/VendorEdit";
+
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 
 const drawerWidth = 260;
 
@@ -101,13 +81,14 @@ const Drawer = styled(MuiDrawer, {
 // ...imports remain the same...
 
 export default function NavBar() {
+  const navigate = useNavigate();
+  const location = useLocation();
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
   const [feature, setFeature] = React.useState("dashboard");
   const [expanded, setExpanded] = React.useState({});
   const [hoveredItem, setHoveredItem] = React.useState(null);
   const [mouseY, setMouseY] = React.useState(100);
-  const [vendorData, setVendorData] = React.useState(null);
   const toggleDrawer = () => {
     if (open) setExpanded({});
     setOpen(!open);
@@ -115,7 +96,6 @@ export default function NavBar() {
 
   const toggleAccordion = (link) => {
     setExpanded((prev) => ({
-      ...prev,
       [link]: !prev[link],
     }));
   };
@@ -124,19 +104,20 @@ export default function NavBar() {
     if (item.subType) {
       open && toggleAccordion(item.link);
     } else {
-      setFeature(item.link);
+      navigate(`/${item.link}`);
     }
   };
 
   const handleSubItemClick = (parentLink, subItem) => {
-    setFeature(`${subItem.link}`);
+    navigate(`/${subItem.link}`);
     setHoveredItem(null);
-    if (!open) setExpanded({ ...expanded, [parentLink]: false });
+    if (!open) setExpanded({ [parentLink]: false });
   };
 
   const isActive = (item) =>
-    feature === item.link ||
-    (item.subType && item.subItems.some((s) => `${s.link}` === feature));
+    location.pathname?.slice(1) === item.link ||
+    (item.subType &&
+      item.subItems.some((s) => `${s.link}` === location.pathname?.slice(1)));
 
   const sidebarData = [
     {
@@ -217,30 +198,6 @@ export default function NavBar() {
     },
   ];
 
-  const links = {
-    dashboard: <Dashboard setFeature={setFeature} />,
-    categories: <Category />,
-    categoryForm: <CategoryForm />,
-    subscriptionPlan: <SubscriptionPlan />,
-    termsCondition: <TermCondition />,
-    vendors: <Vendors setFeature={setFeature} setVendorData={setVendorData} />,
-    viewVendor: <VendorView vendorData={vendorData} />,
-    vendorEdit: <VendorEdit vendorData={vendorData} />,
-    eInvite: <EInvites />,
-    topTrending: <TopTrading />,
-    topSelling: <TopSelling />,
-    aboutApp: <AboutApp />,
-    contactUs: <ContactUs />,
-    weddingCards: <WeddingCard />,
-    videoInvites: <VideoInvites />,
-    videoRequests: <VideoRequest />,
-    story: <Story />,
-    introScreen: <IntroScreen />,
-    carousel: <Carousel />,
-    rating: <Rating />,
-    terms: <PrivacyPolicyEditor />,
-    condition: <PrivacyPolicyEditor />,
-  };
   return (
     <Box sx={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
       <CssBaseline />
@@ -438,11 +395,7 @@ export default function NavBar() {
           }}
           onMouseLeave={() => !open && setHoveredItem(null)}
         >
-          {links[feature] || (
-            <Typography variant="body1">
-              {`Feature "${feature}" not mapped. (Perhaps a sub-feature?)`}
-            </Typography>
-          )}
+          <Outlet />
         </Box>
       </Box>
     </Box>

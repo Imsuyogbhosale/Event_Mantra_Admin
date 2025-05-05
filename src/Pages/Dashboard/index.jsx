@@ -14,10 +14,11 @@ import { FaSellsy } from "react-icons/fa6";
 import { GrContactInfo } from "react-icons/gr";
 import { FaImages } from "react-icons/fa6";
 import { LiaUsersSolid } from "react-icons/lia";
+import { useNavigate } from "react-router-dom";
 
+const Dashboard = () => {
+  const navigate = useNavigate();
 
-
-const Dashboard = ({ setFeature }) => {
   const dashboardData = [
     {
       label: "Categories",
@@ -112,7 +113,7 @@ const Dashboard = ({ setFeature }) => {
     },
   ];
   return (
-    <div className="flex flex-wrap gap-4 lg:gap-16">
+    <div className="flex flex-wrap justify-between gap-y-14">
       {dashboardData?.map((val, index) => (
         <DashboardCard
           key={index}
@@ -120,7 +121,7 @@ const Dashboard = ({ setFeature }) => {
           label={val?.label}
           icon={val?.icon}
           color={val?.color}
-          onClick={() => setFeature(val?.link)}
+          onClick={() => navigate(`/${val?.link}`)}
         />
       ))}
     </div>
