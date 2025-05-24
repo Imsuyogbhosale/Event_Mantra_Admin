@@ -1,9 +1,20 @@
 import React from "react";
-import CategoryTable from "../../Component/Common/CategoryFormTable";
-import { categoryFormdata } from "../../const/form";
+import { categoryFormBodyData, categoryFormHeadData } from "../../const/form";
+import { DataTable } from "../../Component/DataTable";
 
 const CategoryForm = () => {
-  return <div><CategoryTable formData={categoryFormdata}/></div>;
+  return (
+    <div>
+      <DataTable
+        data={categoryFormBodyData}
+        column={categoryFormHeadData}
+        showSearch
+        showRowsPerPage
+        showPagination
+        groupByCategory
+      />
+    </div>
+  );
 };
 
 export default CategoryForm;

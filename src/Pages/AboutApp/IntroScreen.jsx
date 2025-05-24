@@ -1,11 +1,7 @@
-import React from 'react'
+import React from "react";
 
 const IntroScreen = () => {
-  return (
-    <div>
-      IntroScreen
-    </div>
-  )
-}
+  return <div>IntroScreen</div>;
+};
 
-export default IntroScreen
+export default IntroScreen;

@@ -1,9 +1,23 @@
 import React from "react";
-import CategoryTable from "../../Component/Common/CategoryFormTable";
-import { subscriptionFormData } from "../../const/form";
+import {
+  subscriptionFormBodyData,
+  subscriptionFormHeadData,
+} from "../../const/form";
+import { DataTable } from "../../Component/DataTable";
 
 const SubscriptionPlan = () => {
-  return <div><CategoryTable formData={subscriptionFormData}/></div>;
+  return (
+    <div>
+      <DataTable
+        data={subscriptionFormBodyData}
+        column={subscriptionFormHeadData}
+        showSearch
+        showRowsPerPage
+        showPagination
+        groupByCategory
+      />
+    </div>
+  );
 };
 
 export default SubscriptionPlan;

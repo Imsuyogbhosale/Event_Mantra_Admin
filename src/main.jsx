@@ -5,7 +5,7 @@ import "./index.css";
 import { SnackbarProvider } from "notistack";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-    <SnackbarProvider maxSnack={3} autoHideDuration={3000}>  
-        <App />
-    </SnackbarProvider>  // suyog's code 
+  <SnackbarProvider maxSnack={3} autoHideDuration={3000}>
+    <App />
+  </SnackbarProvider>, // suyog's code
 );

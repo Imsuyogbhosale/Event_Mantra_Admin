@@ -17,14 +17,13 @@ import {
   Paper,
   TablePagination,
 } from "@mui/material";
-import { mockVendors } from "../../const/form";
 
 const VendorEdit = ({ vendorData }) => {
   const [search, setSearch] = useState("");
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [page, setPage] = useState(0);
+  const mockVendors = [];
   const productsData = mockVendors.find((val) => val.id === vendorData);
-  console.log(productsData, "productsData");
   const filteredData = productsData.products.filter(
     (product) =>
       product.title.toLowerCase().includes(search.toLowerCase()) ||

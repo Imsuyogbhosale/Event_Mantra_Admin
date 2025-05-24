@@ -1,9 +1,25 @@
 import React, { useState, useEffect } from "react";
 import {
-  Table, TableBody, TableCell, TableContainer, TableHead, TableRow,
-  Paper, Button, Avatar, TextField, Box, FormControl, InputLabel,
-  Select, MenuItem, Dialog, DialogTitle, DialogContent, DialogActions,
-  IconButton
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+  Button,
+  Avatar,
+  TextField,
+  Box,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  IconButton,
 } from "@mui/material";
 import { MdArrowUpward, MdArrowDownward } from "react-icons/md";
 import { enqueueSnackbar } from "notistack";
@@ -33,7 +49,7 @@ const WeddingCard = () => {
   const [form, setForm] = useState({ image: "", name: "", price: "" });
   const [editId, setEditId] = useState(null);
 
-  const [sortConfig, setSortConfig] = useState({ key: '', direction: 'asc' });
+  const [sortConfig, setSortConfig] = useState({ key: "", direction: "asc" });
 
   const handleOpen = () => {
     setEditId(null);
@@ -60,7 +76,9 @@ const WeddingCard = () => {
   const handleSubmit = () => {
     if (editId !== null) {
       setData((prev) =>
-        prev.map((item) => (item.id === editId ? { ...form, id: editId } : item))
+        prev.map((item) =>
+          item.id === editId ? { ...form, id: editId } : item,
+        ),
       );
       enqueueSnackbar("Card updated successfully", { variant: "success" });
     } else {
@@ -72,7 +90,9 @@ const WeddingCard = () => {
   };
 
   const handleDelete = (id) => {
-    const confirm = window.confirm("Are you sure you want to delete this card?");
+    const confirm = window.confirm(
+      "Are you sure you want to delete this card?",
+    );
     if (confirm) {
       setData((prev) => prev.filter((item) => item.id !== id));
       enqueueSnackbar("Card deleted successfully", { variant: "success" });
@@ -86,14 +106,14 @@ const WeddingCard = () => {
   const handleSort = (key) => {
     setSortConfig((prev) => ({
       key,
-      direction: prev.key === key && prev.direction === "asc" ? "desc" : "asc"
+      direction: prev.key === key && prev.direction === "asc" ? "desc" : "asc",
     }));
   };
 
   const filteredDataRaw = data.filter(
     (item) =>
       item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      item.price.toString().includes(searchTerm)
+      item.price.toString().includes(searchTerm),
   );
 
   const sortedData = [...filteredDataRaw].sort((a, b) => {
@@ -117,7 +137,12 @@ const WeddingCard = () => {
     <div style={{ padding: "20px", marginBottom: "4px", marginTop: "4px" }}>
       <h2 className="font-bold py-2">Wedding Cards</h2>
 
-      <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
+      <Box
+        display="flex"
+        justifyContent="space-between"
+        alignItems="center"
+        mb={2}
+      >
         <FormControl sx={{ minWidth: 120 }} size="small">
           <InputLabel>Entries</InputLabel>
           <Select
@@ -126,7 +151,9 @@ const WeddingCard = () => {
             onChange={(e) => {
               const selected = Number(e.target.value);
               setEntries(selected);
-              enqueueSnackbar(`Entries updated to: ${selected}`, { variant: "info" });
+              enqueueSnackbar(`Entries updated to: ${selected}`, {
+                variant: "info",
+              });
             }}
           >
             <MenuItem value={5}>5</MenuItem>
@@ -134,7 +161,9 @@ const WeddingCard = () => {
             <MenuItem value={25}>25</MenuItem>
           </Select>
         </FormControl>
-        <Button variant="contained" color="primary" onClick={handleOpen}>Add</Button>
+        <Button variant="contained" color="primary" onClick={handleOpen}>
+          Add
+        </Button>
         <TextField
           size="small"
           label="Search"
@@ -148,16 +177,19 @@ const WeddingCard = () => {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell sx={{ backgroundColor: '#e3f2fd' }}>Preview Image</TableCell>
-              <TableCell sx={{ backgroundColor: '#e3f2fd' }}>
+              <TableCell sx={{ backgroundColor: "#e3f2fd" }}>
+                Preview Image
+              </TableCell>
+              <TableCell sx={{ backgroundColor: "#e3f2fd" }}>
                 <Box display="flex" alignItems="center" gap={0.5}>
                   Card Name
                   <IconButton
                     onClick={() => handleSort("price")}
-                    sx={{ padding: '2px', fontSize: '16px' }}
+                    sx={{ padding: "2px", fontSize: "16px" }}
                     size="small"
                   >
-                    {sortConfig.key === "price" && sortConfig.direction === "asc" ? (
+                    {sortConfig.key === "price" &&
+                    sortConfig.direction === "asc" ? (
                       <MdArrowUpward fontSize="inherit" />
                     ) : (
                       <MdArrowDownward fontSize="inherit" />
@@ -165,15 +197,16 @@ const WeddingCard = () => {
                   </IconButton>
                 </Box>
               </TableCell>
-              <TableCell sx={{ backgroundColor: '#e3f2fd' }} >
+              <TableCell sx={{ backgroundColor: "#e3f2fd" }}>
                 <Box display="flex" alignItems="center" gap={0.5}>
                   Card Price
                   <IconButton
                     onClick={() => handleSort("name")}
-                    sx={{ padding: '2px', fontSize: '16px' }}
+                    sx={{ padding: "2px", fontSize: "16px" }}
                     size="small"
                   >
-                    {sortConfig.key === "name" && sortConfig.direction === "asc" ? (
+                    {sortConfig.key === "name" &&
+                    sortConfig.direction === "asc" ? (
                       <MdArrowUpward fontSize="inherit" />
                     ) : (
                       <MdArrowDownward fontSize="inherit" />
@@ -181,7 +214,7 @@ const WeddingCard = () => {
                   </IconButton>
                 </Box>
               </TableCell>
-              <TableCell sx={{ backgroundColor: '#e3f2fd' }}>Action</TableCell>
+              <TableCell sx={{ backgroundColor: "#e3f2fd" }}>Action</TableCell>
             </TableRow>
           </TableHead>
 
@@ -189,14 +222,31 @@ const WeddingCard = () => {
             {filteredData.length > 0 ? (
               filteredData.map((item) => (
                 <TableRow key={item.id}>
-                  <TableCell><Avatar variant="rounded" src={item.image} alt={item.name} /></TableCell>
+                  <TableCell>
+                    <Avatar
+                      variant="rounded"
+                      src={item.image}
+                      alt={item.name}
+                    />
+                  </TableCell>
                   <TableCell>{item.name}</TableCell>
                   <TableCell>₹{item.price}</TableCell>
                   <TableCell>
-                    <Button variant="outlined" color="primary" size="small" sx={{ mr: 1 }} onClick={() => handleEdit(item)}>
+                    <Button
+                      variant="outlined"
+                      color="primary"
+                      size="small"
+                      sx={{ mr: 1 }}
+                      onClick={() => handleEdit(item)}
+                    >
                       Edit
                     </Button>
-                    <Button variant="outlined" color="error" size="small" onClick={() => handleDelete(item.id)}>
+                    <Button
+                      variant="outlined"
+                      color="error"
+                      size="small"
+                      onClick={() => handleDelete(item.id)}
+                    >
                       Delete
                     </Button>
                   </TableCell>
@@ -204,28 +254,38 @@ const WeddingCard = () => {
               ))
             ) : (
               <TableRow>
-                <TableCell colSpan={4} align="center">No matching records found.</TableCell>
+                <TableCell colSpan={4} align="center">
+                  No matching records found.
+                </TableCell>
               </TableRow>
             )}
           </TableBody>
         </Table>
       </TableContainer>
 
-      <Box display="flex" justifyContent="center" alignItems="center" mt={2} gap={2}>
+      <Box
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        mt={2}
+        gap={2}
+      >
         <Button
           variant="contained"
           size="small"
           disabled={currentPage === 1}
-          onClick={() => setCurrentPage(prev => prev - 1)}
+          onClick={() => setCurrentPage((prev) => prev - 1)}
         >
           Previous
         </Button>
-        <span>Page {currentPage} of {totalPages}</span>
+        <span>
+          Page {currentPage} of {totalPages}
+        </span>
         <Button
           variant="contained"
           size="small"
           disabled={currentPage === totalPages}
-          onClick={() => setCurrentPage(prev => prev + 1)}
+          onClick={() => setCurrentPage((prev) => prev + 1)}
         >
           Next
         </Button>
@@ -238,18 +298,20 @@ const WeddingCard = () => {
         fullWidth
         PaperProps={{
           sx: {
-            boxShadow: '0px 8px 24px rgba(0, 0, 0, 0.2)',
+            boxShadow: "0px 8px 24px rgba(0, 0, 0, 0.2)",
             borderRadius: 2,
           },
         }}
       >
-        <DialogTitle>{editId ? "Edit Wedding Card" : "Add New Wedding Card"}</DialogTitle>
+        <DialogTitle>
+          {editId ? "Edit Wedding Card" : "Add New Wedding Card"}
+        </DialogTitle>
         <DialogContent>
           <Box sx={{ display: "flex", flexDirection: "column", gap: 2, mt: 1 }}>
             <Button
               variant="outlined"
               component="label"
-              sx={{ '&:hover': { backgroundColor: '#e0f0ff' } }}
+              sx={{ "&:hover": { backgroundColor: "#e0f0ff" } }}
             >
               Upload Image
               <input
@@ -259,7 +321,10 @@ const WeddingCard = () => {
                 onChange={(e) => {
                   const file = e.target.files[0];
                   if (file) {
-                    setForm((prev) => ({ ...prev, image: URL.createObjectURL(file) }));
+                    setForm((prev) => ({
+                      ...prev,
+                      image: URL.createObjectURL(file),
+                    }));
                   }
                 }}
               />
@@ -283,7 +348,9 @@ const WeddingCard = () => {
           </Box>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose} color="error">Cancel</Button>
+          <Button onClick={handleClose} color="error">
+            Cancel
+          </Button>
           <Button onClick={handleSubmit} variant="contained" color="primary">
             {editId ? "Update" : "Add"}
           </Button>
