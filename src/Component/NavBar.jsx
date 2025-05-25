@@ -89,6 +89,10 @@ export default function NavBar() {
   const [expanded, setExpanded] = React.useState({});
   const [hoveredItem, setHoveredItem] = React.useState(null);
   const [mouseY, setMouseY] = React.useState(100);
+
+  React.useEffect(() => {
+    navigate("/dashboard");
+  }, []);
   const toggleDrawer = () => {
     if (open) setExpanded({});
     setOpen(!open);

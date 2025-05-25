@@ -56,14 +56,14 @@ export const categoryFormBodyData = [
     category: "Decoration Product",
     fields: [
       {
-        Category: "Photographer",
+        Category: "",
         Title: "Traditional Photographer",
         Placeholder: "Candid",
         Type: "Checkbox",
         Action: "EDIT|DELETE",
       },
       {
-        Category: "Photographer",
+        Category: "",
         Title: "Traditional Photographer",
         Placeholder: "Candid",
         Type: "Checkbox",
@@ -76,14 +76,14 @@ export const categoryFormBodyData = [
     category: "Halls",
     fields: [
       {
-        Category: "Halls",
+        Category: "",
         Title: "Hall Name",
         Placeholder: "Details of Hall",
         Type: "Text Field",
         Action: "EDIT|DELETE",
       },
       {
-        Category: "Halls",
+        Category: "",
         Title: "Hall Name",
         Placeholder: "Details of Hall",
         Type: "Text Field",
@@ -96,14 +96,14 @@ export const categoryFormBodyData = [
     category: "Events Planner",
     fields: [
       {
-        Category: "Events Planner",
+        Category: "",
         Title: "Oja",
         Placeholder: "	Ott",
         Type: "Text Field",
         Action: "EDIT|DELETE",
       },
       {
-        Category: "Halls",
+        Category: "",
         Title: "	Monopoly",
         Placeholder: "Enter Your Monopoly",
         Type: "	Text Field",
