@@ -64,6 +64,7 @@ const PrivacyPolicyEditor = () => {
       <Stack spacing={2} direction="row" mb={2}>
         <TextField
           label="Effective Date"
+          size="small"
           type="date"
           value={effectiveDate}
           onChange={(e) => setEffectiveDate(e.target.value)}
@@ -72,20 +73,40 @@ const PrivacyPolicyEditor = () => {
         <TextField
           label="Last Updated"
           type="date"
+          size="small"
           value={lastUpdatedDate}
           onChange={(e) => setLastUpdatedDate(e.target.value)}
           InputLabelProps={{ shrink: true }}
         />
-        <Button onClick={() => setViewHtml(!viewHtml)} variant="outlined">
+        <Button
+          onClick={() => setViewHtml(!viewHtml)}
+          variant="outlined"
+          size="small"
+        >
           {viewHtml ? "Editor Mode" : "Preview HTML"}
         </Button>
-        <Button onClick={handleExport} variant="contained" color="secondary">
+        <Button
+          onClick={handleExport}
+          variant="contained"
+          color="secondary"
+          size="small"
+        >
           Export HTML
         </Button>
-        <Button onClick={handleSave} variant="contained" color="primary">
+        <Button
+          onClick={handleSave}
+          variant="contained"
+          color="primary"
+          size="small"
+        >
           Save
         </Button>
-        <Button onClick={handleSubmit} variant="contained" color="success">
+        <Button
+          onClick={handleSubmit}
+          variant="contained"
+          color="success"
+          size="small"
+        >
           Submit to API
         </Button>
       </Stack>

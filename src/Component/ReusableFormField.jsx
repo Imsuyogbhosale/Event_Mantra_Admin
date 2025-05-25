@@ -20,7 +20,15 @@ import {
 } from "@mui/material";
 import { useFormikContext } from "formik";
 
-const ReusableFormField = ({ type, name, label, options = [], ...rest }) => {
+const ReusableFormField = ({
+  type,
+  name,
+  label,
+  options = [],
+  minDate,
+  maxDate,
+  ...rest
+}) => {
   const { values, setFieldValue, touched, errors, handleBlur } =
     useFormikContext();
 
@@ -189,6 +197,28 @@ const ReusableFormField = ({ type, name, label, options = [], ...rest }) => {
           </Typography>
         </FormControl>
       );
+    case "date":
+      return (
+        <TextField
+          fullWidth
+          label={label}
+          type="date"
+          size="small"
+          value={values[name]}
+          onChange={(e) => {
+            const selectedDate = e.target.value;
+            setFieldValue(name, selectedDate);
+          }}
+          InputLabelProps={{ shrink: true }}
+          error={error}
+          helperText={helperText}
+          inputProps={{
+            min: minDate,
+            max: maxDate,
+          }}
+          {...rest}
+        />
+      );
 
     default:
       return null;
@@ -202,4 +232,6 @@ ReusableFormField.propTypes = {
   name: PropTypes.string,
   label: PropTypes.string,
   options: PropTypes.array,
+  minDate: PropTypes.string,
+  maxDate: PropTypes.string,
 };

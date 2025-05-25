@@ -62,7 +62,15 @@ export default function Category() {
   );
 
   const fieldConfigAdd = [
-    // { name: "eventDate", label: "Event Date", type: "date" },
+    {
+      name: "eventDate",
+      label: "Event Date",
+      type: "date",
+      validation: Yup.date()
+        .required("Date is required")
+        .typeError("Invalid date")
+        .max(new Date("12/12/2050"), "Date cannot be in the future"),
+    },
     {
       name: "icon",
       label: "Choose File",
