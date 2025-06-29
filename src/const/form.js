@@ -6,6 +6,15 @@ export const CategoryFormHeadData = [
   { key: "Action", label: "Action", sortTable: false },
 ];
 
+export const VideoInvitedHeadData = [
+  { id: 1, label: "Preview Image", key: "image", sortTable: true },
+  { id: 2, label: "Video", key: "video", sortTable: true },
+  { id: 3, label: "Name", key: "name", sortTable: true },
+  { id: 4, label: "Price", key: "price", sortTable: true },
+  { id: 5, label: "Action", key: "action", sortTable: true },
+];
+
+
 export const CategoryFormBodyData = [
   {
     "Sr.No": 1,

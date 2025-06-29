@@ -20,6 +20,7 @@ function App() {
   return (
     <div className="">
       <CssBaseline />
+      <div></div>
       <Suspense fallback={<Loader />}>
         <RouterProvider router={router} />
       </Suspense>{" "}

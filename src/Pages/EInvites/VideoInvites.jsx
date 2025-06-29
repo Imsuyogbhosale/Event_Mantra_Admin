@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from "react";
 import {
   Table,
@@ -21,6 +22,8 @@ import {
   DialogActions,
 } from "@mui/material";
 import { enqueueSnackbar } from "notistack";
+import { DataTable } from './../../Component/DataTable';
+import { categoryFormBodyData, CategoryFormHeadData, VideoInvitedHeadData } from "../../const/form";
 
 const initialData = [
   {
@@ -118,7 +121,6 @@ const VideoInvites = () => {
   return (
     <div style={{ padding: "20px", marginBottom: "4px", marginTop: "4px" }}>
       <h2 className="font-bold py-2">Video Invites</h2>
-
       <Box
         display="flex"
         justifyContent="space-between"
@@ -148,18 +150,23 @@ const VideoInvites = () => {
           Add
         </Button>
 
-        <TextField
+        {/* <TextField
           size="small"
           label="Search"
           variant="outlined"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-        />
+        /> */}
       </Box>
 
       <TableContainer component={Paper}>
         <Table>
-          <TableHead>
+        <DataTable
+             data={categoryFormBodyData}
+           column={VideoInvitedHeadData}
+        />
+
+          {/* <TableHead>
             <TableRow>
               <TableCell sx={{ backgroundColor: "#e3f2fd" }}>
                 Preview Image
@@ -171,9 +178,9 @@ const VideoInvites = () => {
               </TableCell>
               <TableCell sx={{ backgroundColor: "#e3f2fd" }}>Action</TableCell>
             </TableRow>
-          </TableHead>
+          </TableHead> */}
 
-          <TableBody>
+          {/* <TableBody>
             {filteredData.length > 0 ? (
               filteredData.map((item) => (
                 <TableRow key={item.id}>
@@ -220,7 +227,7 @@ const VideoInvites = () => {
                 </TableCell>
               </TableRow>
             )}
-          </TableBody>
+          </TableBody> */}
         </Table>
       </TableContainer>
 
